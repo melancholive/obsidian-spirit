@@ -1,0 +1,4 @@
+repository "Obsidian Spirit/Obsidian Spirit@2475884248132@cloud"
+  path "/"
+    br "/main"
+    co "/main"
