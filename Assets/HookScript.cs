@@ -33,12 +33,21 @@ public class HookScript : MonoBehaviour
     private bool charging = false;
     private float chargeForce = 0f;
     private InputAction spaceAction;
+    public AudioSource sfxSource;
+    public AudioClip  jumpSfx;
 
     // --- Unity Event Methods ---
     void OnEnable()
     {
         col = GetComponent<Collider2D>();
         spaceAction = new InputAction(type: InputActionType.Button, binding: "<Keyboard>/space");
+        spaceAction.canceled  += _ => {              // 松开那一刻（真正发射）
+            if (charging){
+                Launch();
+                sfxSource?.PlayOneShot(jumpSfx);     // ← 在发射瞬间播放
+                locked=false; charging=false;
+            }
+        };
         spaceAction.Enable();
     }
 

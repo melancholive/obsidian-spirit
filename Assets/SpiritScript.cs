@@ -54,18 +54,17 @@ public class SpiritScript : MonoBehaviour
 
         // Game Over when the ball falls
         if (!cam) cam = Camera.main;
-        Vector3 viewPos = cam.WorldToViewportPoint(transform.position);
-
-        if (viewPos.y < 0)
+        float bottom = cam.transform.position.y - cam.orthographicSize; 
+        if (transform.position.y < bottom)
         {
             logic.gameOver();
         }
+
     }
 
     // Game over when collision
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("碰撞检测正常工作！");
         logic.gameOver();
     }
 }
