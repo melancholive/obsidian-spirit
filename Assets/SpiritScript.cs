@@ -63,9 +63,9 @@ public class SpiritScript : MonoBehaviour
     }
 
     // Game over when collision
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        logic.gameOver();
-    }
+    // private void OnCollisionEnter2D(Collision2D collision)
+    // {
+    //     logic.gameOver();
+    // }
 }
 
