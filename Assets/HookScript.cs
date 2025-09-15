@@ -27,6 +27,7 @@ public class HookScript : MonoBehaviour
     // --- Private State ---
     private Collider2D col;
     private float currentAngle = 0f;
+    private bool prevTouching = false;
     private bool goingUp = true;
     private bool locked = false;
     private bool charging = false;
@@ -62,6 +63,12 @@ public class HookScript : MonoBehaviour
         }
         if (wallCheck.isTouchingWall)
         {
+            if (!prevTouching)
+            {
+                rb.linearVelocity = Vector2.zero;
+                rb.angularVelocity = 0f;
+                // rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            }
             Debug.Log("Arrow should be visible and rotating.");
             rb.gravityScale = 0f;
             RotateArrow();
@@ -73,6 +80,8 @@ public class HookScript : MonoBehaviour
             Debug.Log("Arrow hidden.");
             arrow.gameObject.SetActive(false);
         }
+
+        prevTouching = wallCheck.isTouchingWall;
 
         // Apply horizontal drag to slow down ball's horizontal speed after launch
         if (!wallCheck.isTouchingWall && Mathf.Abs(rb.linearVelocity.x) > 0.01f)
@@ -118,13 +127,13 @@ public class HookScript : MonoBehaviour
         {
             if (wallCheck.isOnRightWall)
             {
-                // touching RIGHT wall: aim only to the upper-left quadrant [90°,180°]
+                // touching RIGHT wall: aim only to the upper-left quadrant [90ï¿½,180ï¿½]
                 minDeg = 90f + edgeMarginDeg;
                 maxDeg = 180f - edgeMarginDeg;
             }
             else
             {
-                // touching LEFT wall: aim only to the upper-right quadrant [0°,90°]
+                // touching LEFT wall: aim only to the upper-right quadrant [0ï¿½,90ï¿½]
                 minDeg = 0f + edgeMarginDeg;
                 maxDeg = 90f - edgeMarginDeg;
             }

@@ -4,9 +4,16 @@ public class SpiritScript : MonoBehaviour
 {
     public LayerMask wallLayer;          // assign your wall layer
     public float wallCheckDistance = 0.5f;
+    public Camera cam;
+    public LogicScript logic;
 
     [HideInInspector] public bool isTouchingWall = false;
     [HideInInspector] public bool isOnRightWall = false;
+
+    void Start()
+    {
+        logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
+    }
 
     void Update()
     {
@@ -44,6 +51,22 @@ public class SpiritScript : MonoBehaviour
         Debug.DrawRay(transform.position, Vector2.right * wallCheckDistance, Color.red);
         Debug.DrawRay(transform.position, Vector2.left * wallCheckDistance, Color.red);
         Debug.DrawRay(transform.position, Vector2.down * wallCheckDistance, Color.blue);
+
+        // Game Over when the ball falls
+        if (!cam) cam = Camera.main;
+        Vector3 viewPos = cam.WorldToViewportPoint(transform.position);
+
+        if (viewPos.y < 0)
+        {
+            logic.gameOver();
+        }
+    }
+
+    // Game over when collision
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("碰撞检测正常工作！");
+        logic.gameOver();
     }
 }
 
